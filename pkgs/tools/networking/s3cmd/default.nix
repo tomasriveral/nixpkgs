@@ -4,19 +4,20 @@
   fetchFromGitHub,
 }:
 
-python3Packages.buildPythonApplication rec {
+python3Packages.buildPythonApplication (finalAttrs: {
   pname = "s3cmd";
   version = "2.4.0";
-  format = "setuptools";
+  pyproject = true;
+  build-system = with python3Packages; [ setuptools ];
 
   src = fetchFromGitHub {
     owner = "s3tools";
     repo = "s3cmd";
-    tag = "v${version}";
-    sha256 = "sha256-cxwf6+9WFt3U7+JdKRgZxFElD+Dgf2P2VyejHVoiDJk=";
+    tag = "v${finalAttrs.version}";
+    hash = "sha256-cxwf6+9WFt3U7+JdKRgZxFElD+Dgf2P2VyejHVoiDJk=";
   };
 
-  propagatedBuildInputs = with python3Packages; [
+  dependencies = with python3Packages; [
     python-magic
     python-dateutil
   ];
@@ -28,4 +29,4 @@ python3Packages.buildPythonApplication rec {
     license = lib.licenses.gpl2Plus;
     maintainers = [ ];
   };
-}
+})
